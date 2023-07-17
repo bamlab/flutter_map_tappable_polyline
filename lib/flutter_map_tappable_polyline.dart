@@ -92,8 +92,10 @@ class TappablePolylineLayer extends PolylineLayer {
           _zoomMap(details, context);
         },
         onTapUp: (TapUpDetails details) {
-          _forwardCallToMapOptions(details, context);
-          _handlePolylineTap(details, onTap, onMiss);
+          final hasTouchedPolyline = _handlePolylineTap(details, onTap, onMiss);
+          if (!hasTouchedPolyline) {
+            _forwardCallToMapOptions(details, context);
+          }
         },
         child: Stack(
           children: [
@@ -107,7 +109,7 @@ class TappablePolylineLayer extends PolylineLayer {
     );
   }
 
-  void _handlePolylineTap(
+  bool _handlePolylineTap(
       TapUpDetails details, Function? onTap, Function? onMiss) {
     // We might hit close to multiple polylines. We will therefore keep a reference to these in this map.
     Map<double, List<TaggedPolyline>> candidates = {};
@@ -167,11 +169,15 @@ class TappablePolylineLayer extends PolylineLayer {
       }
     }
 
-    if (candidates.isEmpty) return onMiss?.call(details);
+    if (candidates.isEmpty) {
+      onMiss?.call(details);
+      return false;
+    }
 
     // We look up in the map of distances to the tap, and choose the shortest one.
     var closestToTapKey = candidates.keys.reduce(min);
     onTap!(candidates[closestToTapKey], details);
+    return true;
   }
 
   void _forwardCallToMapOptions(TapUpDetails details, BuildContext context) {
