@@ -65,10 +65,11 @@ packages:
   flutter_map:
     dependency: transitive
     description:
-      name: flutter_map
-      sha256: "52c65a977daae42f9aae6748418dd1535eaf27186e9bac9bf431843082bc75a3"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "7755c18840fdaa00e930f37decf7138c0891a6c6"
+      resolved-ref: "7755c18840fdaa00e930f37decf7138c0891a6c6"
+      url: "https://github.com/bamlab/flutter_map.git"
+    source: git
     version: "4.0.0"
   flutter_map_tappable_polyline:
     dependency: "direct main"
